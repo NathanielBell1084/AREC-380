@@ -1,0 +1,82 @@
+---
+title: "Analysis Project Visualization"
+author: "Nuwan Hewabethmage"
+date: "10/23/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#The Goal of the Analysis
+One of the major problems we are currently facing is the climate change. Carbon dioxide(CO~2~) play a major role in the climate change. In this Analysis we will find out how CO~2~ have increased in the past few years and How the increase in CO~2~ can affect the climate change.
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(readxl)
+
+```
+
+```{r}
+co2.file <- file.path("C:","Users","nhewa","Documents","AREC380",
+                                   "Home Work","Homework data")
+
+read_excel(file.path(co2.file,"Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx")
+)->co2.data
+
+print(co2.data)
+```
+
+#The total CO~2~ emissions
+The United state Energy Information Administration or EIA has collected data on Carbon Dioxide Emissions From Energy Consumption from since 1973 January to June 2020 
+```{r}
+co2.data %>%
+  select(Month,`Total Energy CO2 Emissions (Million Metric Tons of Carbon Dioxide)`)->Only_total_emission
+
+print(Only_total_emission)
+```
+```{r}
+ggplot()+
+  geom_point(
+    data = Only_total_emission,
+    mapping = aes(
+      x = Month,
+      y = `Total Energy CO2 Emissions (Million Metric Tons of Carbon Dioxide)`
+    )
+  )+
+  labs(
+    title = "Total Energy CO2 Emissions (Million Metric Tons of CO2)",
+    x = "Month",
+    y = "Energy CO2 Emissions (Million Metric Tons of CO2)"
+  )
+```
+
+In the scatter plot diagram we can see in 2020 April and May the Total emission went down. Just to clarify that it does not mean we cut down on energy. The total CO~2~ emission is down is because Covid-19
+
+## Largest contributer for the Total CO~2~ Emission
+Petroleum is one of the major contributors for CO~2~ emission. 
+```{r}
+co2.data %>%
+  select(Month,`Petroleum, Excluding Biofuels, CO2 Emissions (Million Metric Tons of Carbon Dioxide)`)->
+  petroleum_emission
+
+print(petroleum_emission)
+```
+
+```{r}
+ggplot()+
+  geom_point(
+    data = petroleum_emission,
+    mapping = aes(
+      x = Month,
+      y = `Petroleum, Excluding Biofuels, CO2 Emissions (Million Metric Tons of Carbon Dioxide)`
+    )
+  )+
+  labs(
+    title = "Petroleum CO2 Emissions (Million Metric Tons of CO2)",
+    x = "Month",
+    y = "Petroleum CO2 Emissions (Million Metric Tons of CO2)"
+  )
+```
